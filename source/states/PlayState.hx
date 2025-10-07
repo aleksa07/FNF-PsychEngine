@@ -41,6 +41,8 @@ import objects.*;
 import states.stages.*;
 import states.stages.objects.*;
 
+import modchart.Manager;
+
 #if LUA_ALLOWED
 import psychlua.*;
 #else
@@ -54,6 +56,8 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
+
+
 
 /**
  * This is where all the Gameplay stuff happens and is managed
@@ -234,6 +238,7 @@ class PlayState extends MusicBeatState
 	public var boyfriendCameraOffset:Array<Float> = null;
 	public var opponentCameraOffset:Array<Float> = null;
 	public var girlfriendCameraOffset:Array<Float> = null;
+	public var modchartManager:Manager;
 
 	#if DISCORD_ALLOWED
 	// Discord RPC variables
@@ -508,6 +513,9 @@ class PlayState extends MusicBeatState
 
 		noteGroup.add(grpNoteSplashes);
 
+		modchartManager = new Manager();
+		add(modchartManager);
+
 		camFollow = new FlxObject();
 		camFollow.setPosition(camPos.x, camPos.y);
 		camPos.put();
@@ -626,6 +634,7 @@ class PlayState extends MusicBeatState
 
 		resetRPC();
 
+		
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 		callOnScripts('onCreatePost');
 		
@@ -640,6 +649,8 @@ class PlayState extends MusicBeatState
 		cachePopUpScore();
 
 		if(eventNotes.length < 1) checkEventNote();
+
+
 	}
 
 	function set_songSpeed(value:Float):Float
